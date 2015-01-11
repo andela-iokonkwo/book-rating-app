@@ -133,6 +133,18 @@ angular.module('bookRating.controllers', [])
 
      };
 
+     $scope.home = function () {
+         $window.location.href = ('#/book/list');
+     }
+
+     $scope.signIn = function () {
+         $window.location.href = ('#/book/signin');
+     }
+
+     $scope.register = function () {
+         $window.location.href = ('#/book/signup');
+     }
+
      $scope.read = function () {
          if ($scope.loggedIn)
              $window.location.href = ('#/book/olist/have-read');
@@ -250,11 +262,15 @@ angular.module('bookRating.controllers', [])
 .controller('singleBookCtrl', function ($rootScope, $scope, $window, $ionicModal, $firebase, $http, $ionicActionSheet, $stateParams, book) {
     var id = $stateParams.bookId;
     $scope.book = {};
+    $rootScope.show("Please wait... getting book");
+
     $http.get('http://it-ebooks-api.info/v1/book/' + id)
         .success(function (result) {
             $scope.book = result
             $scope.book.Rating = $firebase(new Firebase($rootScope.baseUrl + '/books:' + result.ID + '/rating/' + $rootScope.userId)).$asObject();
             findAverage(result.ID);
+            $rootScope.hide();
+
         }).error(function (err) {
             $rootScope.notify("Failed to download book");
             end = true;
@@ -283,8 +299,11 @@ angular.module('bookRating.controllers', [])
     };
     $scope.DownloadLater = function (bookObject) {
         book.downloadLater(ReduceBook(bookObject));
-
     }
+    $scope.Download= function (bookObject) {
+        window.open(bookObject.Download, '_system', 'location=yes');
+    }
+    
     $scope.Reading = function (bookObject) {
         book.reading(ReduceBook(bookObject));
 
@@ -329,8 +348,7 @@ angular.module('bookRating.controllers', [])
     var bookRef = new Firebase(url);
     bookRef.on('value', function (snapshot) {
         var result = snapshot.val();
-        $scope.Books = [];
-
+                    $scope.Books = [];
         for (var key in result) {
             result[key].Rating = $firebase(new Firebase($rootScope.baseUrl + '/books:' + result[key].ID + '/rating/' + $rootScope.userId)).$asObject();
             $scope.Books.push(result[key]);

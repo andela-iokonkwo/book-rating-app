@@ -75,8 +75,8 @@
     <!--<script src="http://debug-software.intel.com/target/target-script-min.js#hknrXQ7Ms-TfR74ezw-SmtyqDJBpQWXvC9a9fBnnk2Y"></script>-->
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
-    <script src="bower_components/firebase/firebase.js"></script>
-    <script src="bower_components/angularfire/dist/angularfire.min.js"></script>
+    <script src="lib/firebase/firebase.js"></script>
+    <script src="lib/angularfire/dist/angularfire.min.js"></script>
     <!--<script src="https://cdn.firebase.com/js/client/2.0.4/firebase.js"></script> -->
     <!-- firebase -->
     <!--<script src="https://cdn.firebase.com/libs/angularfire/0.9.0/angularfire.min.js"></script> -->
@@ -113,7 +113,7 @@
                 </ion-header-bar>
                 <ion-content>
                     <ion-list>
-                        <ion-item item-type="item-icon-left" nav-clear menu-close href="#/book/list">
+                        <ion-item item-type="item-icon-left" nav-clear menu-close ng-click="home()">
                             <i class="icon ion-home"></i>
                             Home
                         </ion-item>
@@ -137,11 +137,11 @@
                             <i class="icon ion-log-out"></i>
                             Sign Out
                         </ion-item>
-                        <ion-item item-type="item-icon-left" nav-clear menu-close href="#/home/sign-in" ng-if="loggedIn == false">
+                        <ion-item item-type="item-icon-left" nav-clear menu-close ng-click="signIn()" ng-if="loggedIn == false">
                             <i class="icon ion-log-in"></i>
                             Sign In
                         </ion-item>
-                        <ion-item item-type="item-icon-left" nav-clear menu-close href="#/home/register" ng-if="loggedIn == false">
+                        <ion-item item-type="item-icon-left" nav-clear menu-close ng-click="register()" ng-if="loggedIn == false">
                             <i class="icon ion-person"></i>
                             Register
                         </ion-item>
@@ -238,7 +238,7 @@
 
     <script id="book-list.html" type="text/ng-template">
         <ion-view title="{{Title}}">
-            <ion-content class="has-header has-subheader">
+            <ion-content class="has-header">
                 <div class="list">
                     <a class="item my-item"
                        collection-repeat="book in Books"
@@ -306,12 +306,12 @@
                             {{book.Description}}
                         </p>
                         <p>
-                            <a href="#" ng-click="window.open(book.Download, '_system', 'location=yes');" class="subdued"><i class="icon ion-archive"></i> Download</a>
-                            <a href="Javascript:void(0)" style="float:right;width" class="subdued" ng-click="DownloadLater(book)"><i class="icon ion-archive"></i> Download Later</a>
+                            <a href="Javascript:void(0)" ng-click="Download(book)" class="subdued"><i class="icon ion-archive"></i> Download</a>
+                            <a href="Javascript:void(0)" style="float:right;width:120px" class="subdued" ng-click="DownloadLater(book)"><i class="icon ion-archive"></i> Download Later</a>
                         </p>
                     </div>
 
-                    <div class="item tabs tabs-secondary tabs-icon-left">
+                    <div class="item tabs tabs-secondary tabs-icon-left" style="margin-bottom:10px;">
                         <div class="tab-item"  ng-click="Reading(book)">
                             <i class="icon ion-minus-circled"></i>
                             Reading

@@ -15,7 +15,7 @@ angular.module('bookRating.directives', []).directive('starRating', function () 
              <div style='margin: 0px; padding-top:10px; padding: 0px; cursor:pointer;' ng-repeat='idx in maxRatings track by $index'> \
                    <img ng-src='{{((hoverValue + _rating) <= $index) && \"img/star-empty-lg.png\" || \"img/star-fill-lg.png\"}}' \
                     ng-Click='isolatedClick($index + 1, $event)' \
-                    style='height:10px;' \
+                    style='height:15px;' \
                     ng-mouseenter='isolatedMouseHover($index + 1)' \
                     ng-mouseleave='isolatedMouseLeave($index + 1)'></img> \
             </div>",
@@ -25,7 +25,7 @@ angular.module('bookRating.directives', []).directive('starRating', function () 
                 attrs.maxRating = '5';
             };
         },
-        controller: function ($scope, $element, $attrs) {
+        controller: function ($scope, $element, $attrs, $rootScope, $ionicPopup, $state) {
             $scope.maxRatings = [];
             if ($scope.average == 'true')
                 $scope.myRating = "average rating";
@@ -50,6 +50,31 @@ angular.module('bookRating.directives', []).directive('starRating', function () 
 
             $scope.isolatedClick = function (param, $event) {
                 $event.stopPropagation();
+                if ($rootScope.userId == null) {
+                    $ionicPopup.show({
+                        content: 'Hi There.<br> Would you like to Log in',
+                        title: 'Login Required',
+                        subTitle: 'create account or login',
+                        buttons: [
+                            { text: 'No', onTap: function (e) { return true; } },
+                            {
+                                text: '<b>YES</b>',
+                                type: 'button-positive',
+                                onTap: function (e) {
+                                    $state.go('book.signin');
+                                    return true;
+                                }
+                            },
+                        ]
+                    }).then(function (res) {
+                        console.log('Tapped!', res);
+                    }, function (err) {
+                        console.log('Err:', err);
+                    }, function (msg) {
+                        console.log('message:', msg);
+                    });
+                    return;
+                }
                 if ($scope.readOnly == 'true' || $scope.average == 'true') return;
                 console.log($scope.readOnly);
                 $scope.rating = $scope._rating = param;

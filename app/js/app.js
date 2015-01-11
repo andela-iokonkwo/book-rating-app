@@ -63,6 +63,7 @@ angular.module('bookRating', ['ionic', 'firebase', 'bookRating.controllers', 'bo
         } else {
             // user is logged out
             $rootScope.userEmail = null;
+            $rootScope.userId = null;
             $rootScope.$broadcast('logged-in', false);
         }
     };

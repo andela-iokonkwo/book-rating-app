@@ -29,6 +29,7 @@ angular.module('bookRating.services', [])
 
     var _updateRating = function (bookId, newRate) {
         console.log(bookId + ' ' + newRate);
+
         $rootScope.show("Please wait... Updating List");
         var itemRef = new Firebase($rootScope.baseUrl + '/books:' + bookId + '/rating');
         var bookRate = {};

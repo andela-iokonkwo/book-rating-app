@@ -1,0 +1,5 @@
+node_modules/
+.*.sw*
+
+app/It-books-review.xdk
+app/It-books-review.xdke
