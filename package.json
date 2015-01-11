@@ -1,6 +1,6 @@
 {
-  "name": "It books app",
-  "description": "",
+  "name": "It-books-app",
+  "description": "An app for all your IT books needs",
   "version": "0.0.1",
   "private": true,
   "dependencies": {
