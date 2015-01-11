@@ -259,7 +259,7 @@ angular.module('bookRating.controllers', [])
         });
     };
 })
-.controller('singleBookCtrl', function ($rootScope, $scope, $window, $ionicModal, $firebase, $http, $ionicActionSheet, $stateParams, book) {
+.controller('singleBookCtrl', function ($rootScope, $scope, $window, $ionicModal, $firebase, $http, $ionicActionSheet, $stateParams, book, $timeout) {
     var id = $stateParams.bookId;
     $scope.book = {};
     $rootScope.show("Please wait... getting book");
@@ -290,7 +290,10 @@ angular.module('bookRating.controllers', [])
                 }
             }
             console.log(count);
-            $scope.book.AverageRating = total / count;
+            $timeout(function () {
+                $scope.book.AverageRating = total / count;
+            }, 100)
+            //$scope.book.AverageRating = total / count;
         });
     }
 

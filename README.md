@@ -17,5 +17,5 @@ The app is available in Android, IOS and Windows Phone.
 You can download the android version [Here](https://it-books-app.heroku.com/).
 
 
-The online version is available [Here](http://localhost:5000/).
+The online version is available [Here](https://it-books-app.heroku.com).
 
