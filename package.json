@@ -1,0 +1,17 @@
+{
+  "name": "it book rating",
+  "version": "0.0.0",
+  "dependencies": {
+    "express": "~3.4.7",
+    "prerender-node": "^1.1.1"
+  },
+  "devDependencies": {
+
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  }
+}

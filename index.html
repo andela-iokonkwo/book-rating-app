@@ -1,0 +1,334 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title></title>
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <style>
+        .center {
+            display: -webkit-box;
+            display: -moz-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-direction: normal;
+            -moz-box-direction: normal;
+            -webkit-box-orient: horizontal;
+            -moz-box-orient: horizontal;
+            -webkit-flex-direction: row;
+            -ms-flex-direction: row;
+            flex-direction: column;
+            -webkit-flex-wrap: nowrap;
+            -ms-flex-wrap: nowrap;
+            flex-wrap: nowrap;
+            -webkit-box-pack: center;
+            -moz-box-pack: center;
+            -webkit-justify-content: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            -webkit-align-content: stretch;
+            -ms-flex-line-pack: stretch;
+            align-content: stretch;
+            -webkit-box-align: center;
+            -moz-box-align: center;
+            -webkit-align-items: center;
+            -ms-flex-align: center;
+            align-items: center;
+        }
+
+        .button.button-icon.input-button {
+            position: absolute;
+            right: 0;
+            top: 5px;
+            color: #bbb;
+        }
+
+        .item img {
+            height: 80px;
+            width: auto;
+            float: left;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            margin-right: 10px;
+        }
+
+        .item .content {
+            height: 80px;
+            width: auto;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            margin-right: 10px;
+        }
+
+        .list .my-item.item {
+            left: 0;
+            right: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+    </style>
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+    <!--<script src="http://debug-software.intel.com/target/target-script-min.js#hknrXQ7Ms-TfR74ezw-SmtyqDJBpQWXvC9a9fBnnk2Y"></script>-->
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+    <script src="bower_components/firebase/firebase.js"></script>
+    <script src="bower_components/angularfire/dist/angularfire.min.js"></script>
+    <!--<script src="https://cdn.firebase.com/js/client/2.0.4/firebase.js"></script> -->
+    <!-- firebase -->
+    <!--<script src="https://cdn.firebase.com/libs/angularfire/0.9.0/angularfire.min.js"></script> -->
+    <!-- angularfire -->
+    <!-- firebase-simple-login -->
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="cordova.js"></script>
+    <!-- your app's js -->
+    <script src="js/app.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/directives.js"></script>
+    <script src="js/services.js"></script>
+</head>
+<body ng-app="bookRating" animation="slide-left-right-ios7">
+    <ion-nav-bar class="bar-stable nav-title-slide-ios7">
+        <ion-nav-back-button class="button-icon icon ion-chevron-left">
+            Back
+        </ion-nav-back-button>
+    </ion-nav-bar>
+    <ion-nav-view animation="slide-left-right"></ion-nav-view>
+
+    <script id="home-menu.html" type="text/ng-template">
+        <ion-side-menus>
+            <ion-side-menu-content>
+                <ion-nav-bar class="bar-balanced"> </ion-nav-bar>
+                <ion-nav-buttons side="left">
+                    <button class="button button-icon button-clear ion-navicon" ng-click="toggleLeft()"></button>
+                </ion-nav-buttons>
+                <ion-nav-view name="menuContent"></ion-nav-view>
+            </ion-side-menu-content>
+            <ion-side-menu side="left">
+                <ion-header-bar class="bar-dark">
+                    <h1 class="title">Menu</h1>
+                </ion-header-bar>
+                <ion-content>
+                    <ion-list>
+                        <ion-item item-type="item-icon-left" nav-clear menu-close href="#/book/list">
+                            <i class="icon ion-home"></i>
+                            Home
+                        </ion-item>
+                        <ion-item item-type="item-icon-left" nav-clear menu-close ng-click="plantoread()">
+                            <i class="icon ion-close-circled"></i>
+                            I plan to read
+                        </ion-item>
+                        <ion-item item-type="item-icon-left" nav-clear menu-close ng-click="reading()">
+                            <i class="icon ion-minus-circled"></i>
+                            Reading
+                        </ion-item>
+                        <ion-item item-type="item-icon-left" nav-clear menu-close ng-click="read()">
+                            <i class="icon ion-checkmark"></i>
+                            I have read
+                        </ion-item>
+                        <ion-item item-type="item-icon-left" nav-clear menu-close ng-click="downloadlater()">
+                            <i class="icon ion-archive"></i>
+                            download later
+                        </ion-item>
+                        <ion-item item-type="item-icon-left" nav-clear menu-close ng-click="signOut()" ng-if="loggedIn == true">
+                            <i class="icon ion-log-out"></i>
+                            Sign Out
+                        </ion-item>
+                        <ion-item item-type="item-icon-left" nav-clear menu-close href="#/home/sign-in" ng-if="loggedIn == false">
+                            <i class="icon ion-log-in"></i>
+                            Sign In
+                        </ion-item>
+                        <ion-item item-type="item-icon-left" nav-clear menu-close href="#/home/register" ng-if="loggedIn == false">
+                            <i class="icon ion-person"></i>
+                            Register
+                        </ion-item>
+                    </ion-list>
+                </ion-content>
+            </ion-side-menu>
+        </ion-side-menus>
+    </script>
+    <script id="sign-in.html" type="text/ng-template">
+        <ion-view title="Sign-In">
+            <ion-content padding="true">
+                <div class="list col-center">
+                    <label class="item item-input">
+                        <span class="input-label">Username</span>
+                        <input type="text" ng-model="user.email">
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label">Password</span>
+                        <input type="password" ng-model="user.password">
+                    </label>
+                </div>
+                <div>
+                    <button class="button button-block button-positive" ng-click="validateUser()">
+                        Sign-In
+                    </button>
+
+                </div>
+            </ion-content>
+        </ion-view>
+    </script>
+    <script id="sign-up.html" type="text/ng-template">
+        <ion-view title="Sign-In">
+            <ion-content padding="true">
+                <div class="list">
+                    <label class="item item-input">
+                        <span class="input-label">Email</span>
+                        <input type="text" ng-model="user.email">
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label">Password</span>
+                        <input type="password" ng-model="user.password">
+                    </label>
+                    <label class="item item-input">
+                        <button class="button button-block button-positive" ng-click="createUser()">
+                            Sign Up
+                        </button>
+                    </label>
+                </div>
+            </ion-content>
+        </ion-view>
+    </script>
+    <script id="book-search.html" type="text/ng-template">
+        <ion-view title="Search IT Books">
+            <ion-content class="has-header padding center" has-tabs="true" on-refresh="onRefresh()">
+                <div class="list list-inset">
+                    <label class="item item-input" style="min-width:300px">
+                        <i class="icon ion-search placeholder-icon"></i>
+                        <input type="text" placeholder="Search">
+                    </label>
+                    <button class="button" style="margin-top:10px;min-width:300px">Search</button>
+                </div>
+            </ion-content>
+        </ion-view>
+    </script>
+
+    <script id="search-list.html" type="text/ng-template">
+        <ion-header-bar class="bar-light bar-subheader">
+            <input type="search"
+                   placeholder="search Books"
+                   ng-model="searchTerm">
+            <button class="button button-icon ion-search input-button"
+                    ng-click="search()"></button>
+        </ion-header-bar>
+        <ion-view title="Search Results - {{TotalBooks}} Books">
+            <ion-content class="has-header has-subheader">
+                <div class="list">
+                    <a class="item my-item"
+                       collection-repeat="book in Books"
+                       collection-item-width="'100%'"
+                       collection-item-height="100"
+                       ng-click="show(book)">
+                        <img ng-src="{{book.Image}}">
+                        <div class="content">
+                            <strong>{{book.Title}}</strong>
+                            <div star-rating rating="book.Rating.$value" click="updateRating(book.ID, param, $event)" mouse-hover="mouseRatingHover(param)" mouse-leave="mouseRatingLeave(param)"></div>
+                        </div>
+                    </a>
+                </div>
+                <ion-infinite-scroll on-infinite="fetchMore()" distance="5%">
+                </ion-infinite-scroll>
+            </ion-content>
+        </ion-view>
+    </script>
+
+    <script id="book-list.html" type="text/ng-template">
+        <ion-view title="{{Title}}">
+            <ion-content class="has-header has-subheader">
+                <div class="list">
+                    <a class="item my-item"
+                       collection-repeat="book in Books"
+                       collection-item-width="'100%'"
+                       collection-item-height="100"
+                       ng-click="show(book, $index)">
+                        <img ng-src="{{book.Image}}">
+                        <div class="content">
+                            <strong>{{book.Title}}</strong>
+                            <div star-rating rating="book.Rating.$value" click="updateRating(book.ID, param, $event)" mouse-hover="mouseRatingHover(param)" mouse-leave="mouseRatingLeave(param)"></div>
+                        </div>
+                    </a>
+                </div>               
+            </ion-content>
+        </ion-view>
+    </script>
+
+    <script id="single-book.html" type="text/ng-template">
+        <ion-view title="Book Details">
+            <ion-content class="has-header padding center" has-tabs="true" on-refresh="onRefresh()">
+                <div class="list card" style="margin-bottom:20px;">
+
+                    <div class="item">
+                        <div><strong>{{book.Title}}</strong></div>
+                        <div>By {{book.Author}}</div>
+                    </div>
+
+                    <div class="item item-body">
+                        <div class="row" style="padding:0px">
+                            <div class="col">
+                                <img class="" style="width:100%; height:auto" ng-src="{{book.Image}}">
+                            </div>
+                            <div class="col col-center">
+                                <div class="">
+                                    <strong><span style="width:60px">Publisher</span></strong>
+                                </div>
+                                <div class="">
+                                    <span>{{book.Publisher}}</span>
+                                </div>
+                                <div class="">
+                                    <strong><span style="width:60px">Year Published</span></strong>
+                                </div>
+                                <div class="">
+                                    <span>{{book.Year}}</span>
+                                </div>
+                                <div class="">
+                                    <strong><span style="width:60px">Pages</span></strong>
+                                </div>
+                                <div class="">
+                                    <span>{{book.Page}}</span>
+                                </div>
+                                <div class="">
+                                    <strong><span style="width:60px">ISBN</span></strong>
+                                </div>
+                                <div class="">
+                                    <span>{{book.ISBN}}</span>
+                                </div>          
+                            </div>
+                        </div>
+                        <div star-rating style="display:inline-block" readOnly="true" average="true" rating="book.AverageRating"  mouse-hover="mouseRatingHover(param)" mouse-leave="mouseRatingLeave(param)"></div>
+                        <div star-rating style="float:right;display:inline-block;width:100px" rating="book.Rating.$value" click="updateRating(book.ID, param, $event)" mouse-hover="mouseRatingHover(param)" mouse-leave="mouseRatingLeave(param)"></div>
+
+                        <div><strong>Description</strong></div>
+                        <p>
+                            {{book.Description}}
+                        </p>
+                        <p>
+                            <a href="#" ng-click="window.open(book.Download, '_system', 'location=yes');" class="subdued"><i class="icon ion-archive"></i> Download</a>
+                            <a href="Javascript:void(0)" style="float:right;width" class="subdued" ng-click="DownloadLater(book)"><i class="icon ion-archive"></i> Download Later</a>
+                        </p>
+                    </div>
+
+                    <div class="item tabs tabs-secondary tabs-icon-left">
+                        <div class="tab-item"  ng-click="Reading(book)">
+                            <i class="icon ion-minus-circled"></i>
+                            Reading
+                        </div>
+                        <div class="tab-item" href="" ng-click="HaveRead(book)">
+                            <i class="icon ion-checkmark"></i>
+                            have Read
+                        </div>
+                        <div class="tab-item" href="" ng-click="PlanToRead(book)">
+                            <i class="icon ion-close-circled"></i>
+                            plan to Read
+                        </div>
+                    </div>
+
+                </div>
+            </ion-content>
+        </ion-view>
+    </script>
+</body>
+</html>
