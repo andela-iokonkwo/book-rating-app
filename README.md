@@ -13,9 +13,5 @@ An app for all your IT books needs
 7. Add a book to the list of books you are reading.
 8. Add a book to the list of books you plan to read.
 
-The app is available in Android, IOS and Windows Phone.
-You can download the android version [Here](https://it-books-app.heroku.com/).
-
-
 The online version is available [Here](https://it-books-app.heroku.com).
 
